@@ -1,0 +1,19 @@
+{
+  "name": "belveo-functions",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kevinmiguet-wm/belveo-functions.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kevinmiguet-wm/belveo-functions/issues"
+  },
+  "homepage": "https://github.com/kevinmiguet-wm/belveo-functions#readme"
+}
