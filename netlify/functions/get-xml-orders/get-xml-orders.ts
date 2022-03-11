@@ -1,7 +1,6 @@
 import { Handler } from "@netlify/functions";
 import js2xmlparser from "js2xmlparser";
 
-js2xmlparser.parse("Ordini_Spedizione", {});
 
 const example_data = [
   {
@@ -545,8 +544,9 @@ export const handler: Handler = async (event, context) => {
       ],
     },
   }));
+  const reponse = js2xmlparser.parse("Ordini_Spedizione", result, {})
   return {
     statusCode: 200,
-    body: js2xmlparser.parse("Ordini_Spedizione", result),
+    body: reponse
   };
 };
