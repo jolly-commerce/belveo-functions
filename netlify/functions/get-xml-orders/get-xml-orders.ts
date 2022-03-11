@@ -547,6 +547,6 @@ export const handler: Handler = async (event, context) => {
   }));
   return {
     statusCode: 200,
-    body: js2xmlparser.parse("", result),
+    body: js2xmlparser.parse("Ordini_Spedizione", result),
   };
 };
