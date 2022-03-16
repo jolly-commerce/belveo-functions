@@ -1,7 +1,7 @@
 import { Handler } from "@netlify/functions";
 import js2xmlparser from "js2xmlparser";
 
-
+// check https://docs.google.com/spreadsheets/d/1Ruaw8xqtg1XsYTtvEPYxbXmF5EiREBs3/edit#gid=1627918533 for more details
 const example_data = [
   {
     id: 4309864120513,
@@ -518,12 +518,12 @@ type data_type = typeof example_data;
 
 export const handler: Handler = async (event, context) => {
   let body: data_type = JSON.parse(event.body);
-
+  
   const result = body.map((order) => ({
     Testata_Ordine: {
-      Codice_Cliente: order.customer.id,
+      Codice_Cliente: String(order.customer.id).slice(0, -1), // because they want 12 number user ids and cannot change their system. This is the best we can do.
+      Codice_Vettore: 99999,
       Numero_Ordine: order.id,
-      Data_Ordine: order.id,
       Ragione_Sociale_Destinatario: `<![CDATA[ ${order.shipping_address.first_name} ${order.shipping_address.last_name}]]>`,
       Indirizzo_Destinatario: order.shipping_address.address1,
       Localita_Destinazione_Merce: order.billing_address.city,
@@ -533,9 +533,9 @@ export const handler: Handler = async (event, context) => {
       Righe_Ordine: [
         order.line_items.map((line_item, k) => ({
           Riga_Ordine: {
-            Codice_Cliente: order.customer.id,
+            Codice_Cliente: String(order.customer.id).slice(0, -1),
             Numero_Ordine: order.id,
-            Numero_Riga: order.line_items.length,
+            Numero_Riga: k+1,
             Numero_SottoRiga: k + 1,
             Codice_Articolo: line_item.sku,
             Quantita_da_Spedire: line_item.quantity,
