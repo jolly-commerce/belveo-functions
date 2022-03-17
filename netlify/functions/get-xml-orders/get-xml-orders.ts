@@ -522,7 +522,6 @@ export const handler: Handler = async (event, context) => {
   const result = body.map((order) => ({
     Testata_Ordine: {
       Codice_Cliente: String(order.customer.id).slice(0, -1), // because they want 12 number user ids and cannot change their system. This is the best we can do.
-      Codice_Vettore: 99999,
       Numero_Ordine: order.id,
       Ragione_Sociale_Destinatario: `<![CDATA[ ${order.shipping_address.first_name} ${order.shipping_address.last_name}]]>`,
       Indirizzo_Destinatario: order.shipping_address.address1,
@@ -536,6 +535,7 @@ export const handler: Handler = async (event, context) => {
       CAP_Destinazione_Merce: order.billing_address.zip,
       Provincia_Destinazione_Merce: order.billing_address.province_code,
       Nazione_Destinazione_Merce: order.billing_address.country_code,
+      Codice_Vettore: 99999,
       Righe_Ordine: [
         order.line_items.map((line_item, k) => ({
           Riga_Ordine: {
@@ -550,7 +550,7 @@ export const handler: Handler = async (event, context) => {
       ],
     },
   }));
-  const reponse = js2xmlparser.parse("Ordini_Spedizione", result, {})
+  const reponse = js2xmlparser.parse("Ordini_Spedizione", result, {declaration: {encoding: 'UTF-8'}})
   return {
     statusCode: 200,
     body: reponse
