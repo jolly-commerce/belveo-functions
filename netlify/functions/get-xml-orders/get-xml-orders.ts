@@ -518,18 +518,18 @@ type data_type = typeof example_data;
 
 export const handler: Handler = async (event, context) => {
   let body: data_type = JSON.parse(event.body);
-  
+
   const result = body.map((order) => ({
     Testata_Ordine: {
       Codice_Cliente: String(order.customer.id).slice(0, -1), // because they want 12 number user ids and cannot change their system. This is the best we can do.
       Numero_Ordine: order.id,
-      Ragione_Sociale_Destinatario: `<![CDATA[ ${order.shipping_address.first_name} ${order.shipping_address.last_name}]]>`,
+      Ragione_Sociale_Destinatario: `${order.shipping_address.first_name} ${order.shipping_address.last_name}`,
       Indirizzo_Destinatario: order.shipping_address.address1,
       Localita_Destinatario: order.shipping_address.city,
       CAP_Destinatario: order.shipping_address.zip,
       Provincia_Destinatario: order.shipping_address.province_code,
       Nazione_Destinatario: order.shipping_address.country_code,
-      Ragione_Sociale_Destinazione_Merce: `<![CDATA[ ${order.billing_address.first_name} ${order.billing_address.last_name}]]>`,
+      Ragione_Sociale_Destinazione_Merce: `${order.billing_address.first_name} ${order.billing_address.last_name}`,
       Indirizzo_Destinazione_Merce: order.billing_address.address1,
       Localita_Destinazione_Merce: order.billing_address.city,
       CAP_Destinazione_Merce: order.billing_address.zip,
@@ -541,8 +541,8 @@ export const handler: Handler = async (event, context) => {
           Riga_Ordine: {
             Codice_Cliente: String(order.customer.id).slice(0, -1),
             Numero_Ordine: order.id,
-            Numero_Riga: k+1,
-            Numero_SottoRiga: k + 1,
+            Numero_Riga: k + 1,
+            Numero_SottoRiga: 1,
             Codice_Articolo: line_item.sku,
             Quantita_da_Spedire: line_item.quantity,
           },
@@ -550,9 +550,12 @@ export const handler: Handler = async (event, context) => {
       ],
     },
   }));
-  const reponse = js2xmlparser.parse("Ordini_Spedizione", result, {declaration: {encoding: 'UTF-8'}})
+  const reponse = js2xmlparser.parse("Ordini_Spedizione", result, {
+    declaration: { encoding: "UTF-8" },
+    cdataKeys: ["Ragione_Sociale_Destinazione_Merce", "Ragione_Sociale_Destinatario"],
+  });
   return {
     statusCode: 200,
-    body: reponse
+    body: reponse,
   };
 };
