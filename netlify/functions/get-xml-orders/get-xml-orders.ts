@@ -520,7 +520,6 @@ export const handler: Handler = async (event, context) => {
   let body: data_type = JSON.parse(event.body);
 
   const result = body.map((order) => ({
-    Testata_Ordine: {
       Codice_Cliente: String(order.customer.id).slice(0, -1), // because they want 12 number user ids and cannot change their system. This is the best we can do.
       Numero_Ordine: String(order.id).slice(0, -1),
       Ragione_Sociale_Destinatario: `${order.shipping_address.first_name} ${order.shipping_address.last_name}`,
@@ -548,9 +547,11 @@ export const handler: Handler = async (event, context) => {
           },
         })),
       ],
-    },
+    
   }));
-  const reponse = js2xmlparser.parse("Ordini_Spedizione", result, {
+ 
+
+  const reponse = js2xmlparser.parse("Ordini_Spedizione", {Testata_Ordine: result}, {
     declaration: { encoding: "UTF-8" },
     cdataKeys: ["Ragione_Sociale_Destinazione_Merce", "Ragione_Sociale_Destinatario"],
   });
