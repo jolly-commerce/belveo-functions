@@ -515,11 +515,21 @@ const example_data = [
 ];
 
 type data_type = typeof example_data;
+// useful to send clean objects to external api.
+export function getObjectWithoutEmptyProperties<T>(object: T): T {
+  let result = {} as T;
+  Object.keys(object).forEach((key) =>
+    object[key] !== undefined && object[key] !== null
+      ? (result[key] = object[key])
+      : null
+  );
+  return result;
+}
 
 export const handler: Handler = async (event, context) => {
   let body: data_type = JSON.parse(event.body);
 
-  const result = body.map((order) => ({
+  const result = body.map((order) => (getObjectWithoutEmptyProperties({
     Codice_Cliente: String(order.customer.id).slice(0, -1), // because they want 12 number user ids and cannot change their system. This is the best we can do.
     Numero_Ordine: String(order.id).slice(0, -1),
     Ragione_Sociale_Destinatario: `${order.shipping_address.first_name} ${order.shipping_address.last_name}`,
@@ -545,7 +555,7 @@ export const handler: Handler = async (event, context) => {
         Quantita_da_Spedire: line_item.quantity,
       })),
     },
-  }));
+  })));
 
   const reponse = js2xmlparser.parse(
     "Ordini_Spedizione",
