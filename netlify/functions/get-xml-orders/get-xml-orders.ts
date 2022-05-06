@@ -545,7 +545,6 @@ export const handler: Handler = async (event, context) => {
     Provincia_Destinazione_Merce: order.billing_address.province_code,
     Nazione_Destinazione_Merce: order.billing_address.country_code,
     Codice_Vettore: "FERCAM_FLEX",
-    Nota_Spedizione: order.note,
     Righe_Ordine: {
       Riga_Ordine: order.line_items.map((line_item, k) => ({
         Codice_Cliente: String(order.customer.id).slice(0, -1),
