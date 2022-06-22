@@ -61,6 +61,6 @@ export const handler: Handler = async (event, context) => {
   const response = result;
   return {
     statusCode: 200,
-    body: JSON.stringify(response),
+    body: response,
   };
 };
