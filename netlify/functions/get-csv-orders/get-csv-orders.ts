@@ -1,5 +1,5 @@
 import { Handler } from "@netlify/functions";
-import { data_type } from "./types";
+import { data_type } from "../get-xml-orders/types";
 import dayjs from "dayjs";
 
 
@@ -56,7 +56,7 @@ export const handler: Handler = async (event, context) => {
       _result += orderProductLine;
     });
 
-    result.push({line: _result})
+    result.push({line: _result, name: order.name.replace("#", "")})
   });
   const response = result;
   return {
