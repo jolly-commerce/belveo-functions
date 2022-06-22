@@ -1,5 +1,5 @@
 import { Handler } from "@netlify/functions";
-import { data_type } from "./types";
+import { data_type } from "../get-xml-orders/types";
 import dayjs from "dayjs";
 
 
@@ -44,9 +44,7 @@ export const handler: Handler = async (event, context) => {
       order.shipping_address.city
     }","","","","${order.shipping_address.zip}","United-Kingdom","${
       order.shipping_address.first_name
-    } ${order.shipping_address.last_name}","${
-      order.shipping_address.phone
-    }","","","","","","","","","","","","${getDateField()}","STANDARD","${order.name.replace(
+    } ${order.shipping_address.last_name}","${order.shipping_address.phone}","","","","","","","","","","","","${getDateField()}","STANDARD","${order.name.replace(
       "#",
       ""
     )}","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","false",""\n`;
@@ -60,9 +58,7 @@ export const handler: Handler = async (event, context) => {
         4. = correspond à la quantité commandée par référence.
        */
       const getCleanSKU = () => line.sku.replace(/\D+/g, ""); // sometimes sku contains - AIRWIND and we don't want that
-      let orderProductLine = `"L","${getCleanSKU()}","","${
-        line.quantity
-      }","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""\n`;
+      let orderProductLine = `"L","${getCleanSKU()}","","${line.quantity}","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""\n`;
       result += orderProductLine;
     });
   });
