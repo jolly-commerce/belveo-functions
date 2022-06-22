@@ -34,9 +34,8 @@ export const handler: Handler = async (event, context) => {
 
     const getDateField = () => {
       // from 2022-03-20T09:25:29.000Z to 20/03/2022
-      const date = order.created_at.split("T")[0];
 
-      return dayjs(date).add(2, "days").format("DD/MM/YYYY");
+      return dayjs().add(2, "days").format("DD/MM/YYYY");
     };
     let orderLine = `"H","ORDER","CREATE","E902","","","${getLine7()}","${
       order.shipping_address.address1
