@@ -7,8 +7,11 @@ import dayjs from "dayjs";
 export const handler: Handler = async (event, context) => {
   let body: data_type = JSON.parse(event.body);
 
-  let result = "";
+  let result: string[] = []
+
   body.map((order) => {
+  let _result = "";
+
     /**
      * LIGNE 1 :
         - 1 = H --> à chaque fois, cela ne bouge pas
@@ -39,7 +42,7 @@ export const handler: Handler = async (event, context) => {
       return dayjs(date).add(2, "days").format("DD/MM/YYYY");
     };
     let orderLine = `"H","ORDER","CREATE","E902","","","${getLine7()}","${order.shipping_address.address1} ${order.shipping_address.address2}","${order.shipping_address.city}","","","","${order.shipping_address.zip}","United-Kingdom","${order.shipping_address.first_name} ${order.shipping_address.last_name}","${order.shipping_address.phone}","","","","","","","","","","","","${getDateField()}","STANDARD","${order.name.replace("#","")}","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","false",""\n`;
-    result += orderLine;
+    _result += orderLine;
 
     order.line_items.forEach((line) => {
       /**
@@ -50,13 +53,14 @@ export const handler: Handler = async (event, context) => {
        */
       const getCleanSKU = () => line.sku.replace(/\D+/g, ""); // sometimes sku contains - AIRWIND and we don't want that 36
       let orderProductLine = `"L","${getCleanSKU()}","","${line.quantity}","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""\n`;
-      result += orderProductLine;
+      _result += orderProductLine;
     });
-  });
 
+    result.push(_result)
+  });
   const response = result;
   return {
     statusCode: 200,
-    body: response,
+    body: JSON.stringify(response),
   };
 };
