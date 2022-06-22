@@ -1,5 +1,5 @@
 import { Handler } from "@netlify/functions";
-import { data_type } from "../get-xml-orders/types";
+import { data_type } from "./types";
 import dayjs from "dayjs";
 
 
@@ -34,19 +34,11 @@ export const handler: Handler = async (event, context) => {
 
     const getDateField = () => {
       // from 2022-03-20T09:25:29.000Z to 20/03/2022
+      const date = order.created_at.split("T")[0];
 
-      return dayjs().add(2, "days").format("DD/MM/YYYY");
+      return dayjs(date).add(2, "days").format("DD/MM/YYYY");
     };
-    let orderLine = `"H","ORDER","CREATE","E902","","","${getLine7()}","${
-      order.shipping_address.address1
-    } ${order.shipping_address.address2}","${
-      order.shipping_address.city
-    }","","","","${order.shipping_address.zip}","United-Kingdom","${
-      order.shipping_address.first_name
-    } ${order.shipping_address.last_name}","${order.shipping_address.phone}","","","","","","","","","","","","${getDateField()}","STANDARD","${order.name.replace(
-      "#",
-      ""
-    )}","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","false",""\n`;
+    let orderLine = `"H","ORDER","CREATE","E902","","","${getLine7()}","${order.shipping_address.address1} ${order.shipping_address.address2}","${order.shipping_address.city}","","","","${order.shipping_address.zip}","United-Kingdom","${order.shipping_address.first_name} ${order.shipping_address.last_name}","${order.shipping_address.phone}","","","","","","","","","","","","${getDateField()}","STANDARD","${order.name.replace("#","")}","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","false",""\n`;
     result += orderLine;
 
     order.line_items.forEach((line) => {
@@ -56,8 +48,8 @@ export const handler: Handler = async (event, context) => {
         2. = Correspond à la référence du produit.
         4. = correspond à la quantité commandée par référence.
        */
-      const getCleanSKU = () => line.sku.replace(/\D+/g, ""); // sometimes sku contains - AIRWIND and we don't want that
-      let orderProductLine = `"L","${getCleanSKU()}","","${line.quantity}","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""\n`;
+      const getCleanSKU = () => line.sku.replace(/\D+/g, ""); // sometimes sku contains - AIRWIND and we don't want that 36
+      let orderProductLine = `"L","${getCleanSKU()}","","${line.quantity}","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""\n`;
       result += orderProductLine;
     });
   });
