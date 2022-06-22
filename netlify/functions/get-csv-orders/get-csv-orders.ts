@@ -7,7 +7,7 @@ import dayjs from "dayjs";
 export const handler: Handler = async (event, context) => {
   let body: data_type = JSON.parse(event.body);
 
-  let result: string[] = []
+  let result: any[] = []
 
   body.map((order) => {
   let _result = "";
@@ -56,7 +56,7 @@ export const handler: Handler = async (event, context) => {
       _result += orderProductLine;
     });
 
-    result.push(_result)
+    result.push({line: _result})
   });
   const response = result;
   return {
