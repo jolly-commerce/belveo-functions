@@ -1,5 +1,5 @@
 import { Handler } from "@netlify/functions";
-import js2xmlparser from "js2xmlparser";
+const js2xmlparser = require("js2xmlparser");
 import { data_type } from "./types";
 
 // check https://docs.google.com/spreadsheets/d/1Ruaw8xqtg1XsYTtvEPYxbXmF5EiREBs3/edit#gid=1627918533 for more details
