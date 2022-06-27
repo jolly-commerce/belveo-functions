@@ -22,6 +22,6 @@
     "csv-string": "^4.1.0",
     "dayjs": "^1.11.3",
     "typescript": "^4.6.2",
-    "js2xmlparser": "^4.0.2"
+    "js2xmlparser": "4.0.2"
   }
 }
