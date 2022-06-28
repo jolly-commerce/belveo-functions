@@ -20,7 +20,7 @@ export const handler: Handler = async (event, context) => {
 
   const result = body.map((order) => (getObjectWithoutEmptyProperties({
     Codice_Cliente: String(order.customer.id).slice(0, -1), // because they want 12 number user ids and cannot change their system. This is the best we can do.
-    Numero_Ordine: `0000${order.number}`,
+    Numero_Ordine: String(order.id).slice(0, -1),
     Ragione_Sociale_Destinatario: `${order.shipping_address.first_name} ${order.shipping_address.last_name}`,
     Indirizzo_Destinatario: order.shipping_address.address1,
     Localita_Destinatario: order.shipping_address.city,
