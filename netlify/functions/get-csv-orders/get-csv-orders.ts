@@ -51,7 +51,7 @@ export const handler: Handler = async (event, context) => {
         2. = Correspond à la référence du produit.
         4. = correspond à la quantité commandée par référence.
        */
-      const getCleanSKU = () => line.sku.replace(/\D+/g, ""); // sometimes sku contains - AIRWIND and we don't want that 36
+      const getCleanSKU = () => line.sku.replace("AIRWIND", ""); // sometimes sku contains - AIRWIND and we don't want that 36
       let orderProductLine = `"L","${getCleanSKU()}","","${line.quantity}","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""\n`;
       _result += orderProductLine;
     });
